@@ -3,14 +3,15 @@
 session_start();
 
 // --- Database Connection ---
-// Using PDO for better flexibility and support for PostgreSQL
+// Using PDO for flexibility and support for PostgreSQL
 
-// Get connection details from the Supabase image
-$db_host = "aws-0-us-east-1.pooler.supabase.com"; // From image
-$db_port = "6543";                               // From image
-$db_name = "postgres";                           // From image
-$db_user = "postgres.ffzowimwogtxkxjspkdb";      // From image
-$db_password = "[YOUR-PASSWORD]";               // Replace with your actual Supabase database password
+// --- Supabase Session Pooler Connection Details ---
+// REPLACE '[YOUR-PASSWORD]' with your actual database password from Supabase
+$db_host = "aws-0-us-east-1.pooler.supabase.com"; // From Supabase pooler config
+$db_port = "5432";                               // From Supabase Session Pooler config
+$db_name = "postgres";                           // From Supabase pooler config
+$db_user = "postgres.ffzowimwogtxkxjspkdb";      // From Supabase pooler config
+$db_password = "password1";               // <--- REPLACE THIS WITH YOUR ACTUAL PASSWORD
 
 // Construct the DSN (Data Source Name) for PostgreSQL using PDO
 $dsn = "pgsql:host={$db_host};port={$db_port};dbname={$db_name}";
@@ -21,20 +22,20 @@ try {
     // Create a new PDO instance
     $conn = new PDO($dsn, $db_user, $db_password);
 
-    // Set PDO error mode to exception - this makes catching errors easier
+    // Set PDO error mode to exception - this makes catching errors easier and recommended
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Optional: Set the client encoding to UTF8
-    // $conn->exec("SET NAMES 'UTF8'"); // Less common in modern drivers, connection often defaults correctly
+    // Optional: Set the client encoding if needed (often defaults correctly to UTF8)
+    // $conn->exec("SET NAMES 'UTF8'");
 
     // Connection successful
-    // echo "Connected successfully to PostgreSQL!"; // Uncomment for testing
+    // echo "Connected successfully to PostgreSQL!"; // Uncomment for testing if needed
 } catch (PDOException $e) {
-    // Log the error instead of echoing it directly in production
+    // Log the detailed error message (e.g., to a file or monitoring service)
     error_log("Database Connection failed: " . $e->getMessage());
 
-    // Display a user-friendly error message and stop execution
-    // In a production environment, you might display a generic error page
+    // In a production environment, display a generic error message to the user
+    // Do not expose sensitive details from $e->getMessage() directly to the user.
     die("Connection failed: Please try again later.");
 }
 
@@ -42,44 +43,42 @@ try {
 // Adapted to use PDO prepared statements
 if (!function_exists('get_setting')) {
     /**
-     * Retrieves a setting value from the game_settings table.
+     * Retrieves a setting value from the game_settings table using PDO.
      *
      * @param PDO|null $conn The database connection object (PDO instance).
      * @param string $setting_name The name of the setting to retrieve.
-     * @return string|null The setting value, or null if the connection is invalid or the setting is not found.
+     * @return string|null The setting value, or null if the connection is invalid, the setting is not found, or an error occurs.
      */
     function get_setting(?PDO $conn, string $setting_name): ?string {
         if (!$conn) {
-            error_log("get_setting called with no database connection.");
+            error_log("get_setting called with no valid database connection.");
             return null;
         }
 
-        // Use try-catch for PDO operations within the function for robustness
         try {
             // Prepare the SQL statement
-            // Positional placeholder (?) works with bindValue
+            // Use positional placeholder (?)
             $stmt = $conn->prepare("SELECT setting_value FROM game_settings WHERE setting_name = ? LIMIT 1");
 
             // Bind the parameter value
-            // PDO::PARAM_STR specifies the parameter is a string
+            // 1 refers to the first placeholder (the ?)
             $stmt->bindValue(1, $setting_name, PDO::PARAM_STR);
 
             // Execute the statement
             $stmt->execute();
 
-            // Fetch the result
-            // fetch(PDO::FETCH_ASSOC) fetches the next row as an associative array
+            // Fetch the result row as an associative array
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             // Return the setting value if found, otherwise null
             if ($row) {
-                // Optional: Close cursor to free resources, especially useful in loops
+                // Optional: Close cursor to free resources if fetching only one row
                 $stmt->closeCursor();
                 return $row['setting_value'];
             }
 
         } catch (PDOException $e) {
-            // Log the error related to the query
+            // Log the error related to the query execution
             error_log("Error executing get_setting query: " . $e->getMessage());
             // Return null on error
             return null;
