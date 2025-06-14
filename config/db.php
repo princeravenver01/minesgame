@@ -9,7 +9,7 @@ session_start();
 // REPLACE '[YOUR-PASSWORD]' with your actual database password from Supabase
 $db_host = "aws-0-us-east-1.pooler.supabase.com"; // From Supabase pooler config
 $db_port = "5432";                               // From Supabase Session Pooler config
-$db_name = "postgres";                           // From Supabase pooler config
+$db_name = "mines_game_db";                           // From Supabase pooler config
 $db_user = "postgres.ffzowimwogtxkxjspkdb";      // From Supabase pooler config
 $db_password = "AveeAthena2025$";               // <--- REPLACE THIS WITH YOUR ACTUAL PASSWORD
 
