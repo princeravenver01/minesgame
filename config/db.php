@@ -11,7 +11,7 @@ $db_host = "aws-0-us-east-1.pooler.supabase.com"; // From Supabase pooler config
 $db_port = "5432";                               // From Supabase Session Pooler config
 $db_name = "postgres";                           // From Supabase pooler config
 $db_user = "postgres.ffzowimwogtxkxjspkdb";      // From Supabase pooler config
-$db_password = "password1";               // <--- REPLACE THIS WITH YOUR ACTUAL PASSWORD
+$db_password = "AveeAthena2025$";               // <--- REPLACE THIS WITH YOUR ACTUAL PASSWORD
 
 // Construct the DSN (Data Source Name) for PostgreSQL using PDO
 $dsn = "pgsql:host={$db_host};port={$db_port};dbname={$db_name}";
