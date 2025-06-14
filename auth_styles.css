@@ -1,0 +1,349 @@
+/* --- CSS Variables (Copied from assets/css/style.css) --- */
+:root {
+/* --- Primary Green Theme Colors --- */
+--primary-color: #52a538; /* Main green */
+--primary-dark: #387628; /* Darker green for hover/accents */
+--bet-button-color: #52a538; /* Green Bet button (used for gradient start) */
+--bet-button-hover: #3cff00; /* Brighter green on hover (not used in this exact gradient, but good to have) */
+--win-color: #52a538; /* Green for win/cashout (used for success messages) */
+/* REMOVED: secondary-button-bg, secondary-button-hover */
+--mines-select-bg: #3a3a3a; /* Keep dark grey for dropdown (not used in auth styles, but part of original root) */
+--mines-select-border: #555; /* Keep grey for dropdown border (not used in auth styles) */
+
+/* --- Background/Text/Game Element Colors (Relevant for auth pages background) --- */
+--dark-bg: #1a1a1a; /* Used for body background */
+--medium-bg: #2c2c2c; /* Used for container background in previous auth style, keeping it here */
+--light-bg: #3a3a3a; /* Not explicitly used in this specific auth design, but part of original root */
+--darker-bg: #0d0d0d; /* Not explicitly used in this specific auth design, but part of original root */
+--light-text: #ffffff; /* Explicitly defining this here since it's used in body style */
+
+/* --- Layout Constants (Not directly used in auth styles) --- */
+/* --header-height: 70px; */
+/* --mobile-header-height: 100px; */
+/* etc. */
+}
+
+
+/* --- Base Body Styles (Copied and adapted from assets/css/style.css body rule) --- */
+body {
+    /* Use variables for background and text color */
+    background-color: var(--dark-bg);
+    color: var(--light-text); /* Assuming --light-text is defined in your style.css root, if not, use #ffffff */
+    /* Fallback if --light-text isn't defined, though added to :root above now */
+    /* color: #ffffff; */
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Or your preferred font */
+    margin: 0; /* Ensure no default margin */
+    padding-top: 0; /* Ensure no top padding */
+    padding-bottom: 0;
+    min-height: 100vh; /* Ensure body covers at least the viewport height */
+    box-sizing: border-box;
+    display: flex; /* Use flex to stack header and card */
+    flex-direction: column;
+    align-items: center; /* Center header and card horizontally */
+    justify-content: flex-start; /* Align content from the top */
+    width: 100%; /* Take full width */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    /* Remove any game-specific padding if it was part of the original body rule */
+}
+
+/* --- Styles for Login and Register Pages (Matching image style - Green Theme) --- */
+/* These styles define the specific layout and appearance of the auth pages */
+
+
+/* Container for the colored header section (green area) */
+.auth-header-section {
+    width: 100%; /* Always take full width */
+    /* Create a gradient like the orange image, using green variables */
+    background: linear-gradient(to bottom, var(--primary-color), var(--primary-dark));
+    color: white; /* White text */
+    text-align: center;
+    padding: 40px 20px 80px 20px; /* Desktop padding, bottom padding creates space for the curved card */
+    box-sizing: border-box;
+    position: relative; /* Needed for the card to overlap */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+/* Style for the checkmark icon/div in the header */
+.auth-header-section .checkmark-icon {
+    width: 60px; /* Icon size */
+    height: 60px; /* Icon size */
+    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white circle background */
+    border-radius: 50%; /* Make it a circle */
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Add a white checkmark icon inside */
+    font-size: 2em; /* Size for a text checkmark */
+    font-weight: bold;
+    line-height: 1;
+}
+.auth-header-section .checkmark-icon::before {
+    content: '\2713'; /* Unicode checkmark */
+     color: white;
+}
+
+
+/* Style for the main title (WELCOME!! / REGISTER) in the header */
+.auth-header-section h1 {
+    color: white; /* White text */
+    margin: 0 0 5px 0;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+/* Style for the subtitle (e.g., hidden on login, visible on register) */
+.auth-header-section h2 {
+    color: white; /* White text */
+    margin: 0;
+    font-size: 1.5em; /* Smaller than main title */
+    font-weight: normal;
+}
+
+
+/* Container for the white card */
+.auth-card-container {
+    width: 90%; /* Desktop width */
+    max-width: 400px; /* Max width for larger screens */
+    background: white; /* White background */
+    border-radius: 20px; /* Large border radius for the card */
+    padding: 30px; /* Padding inside the card */
+    box-sizing: border-box;
+    margin: -60px auto 30px auto; /* Top margin to pull up, auto left/right margin for centering, bottom margin for space below */
+    position: relative;
+    z-index: 1; /* Ensure it's above the background */
+    text-align: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Add shadow */
+    color: #333; /* Default text color inside white card */
+    flex-shrink: 0; /* Prevent card from shrinking */
+}
+
+/* Form styling inside the white card */
+.auth-card-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between form elements */
+    margin: 20px 0; /* Space above and below the form */
+    width: 100%; /* Ensure form takes full width of its container (card padding applied) */
+    box-sizing: border-box;
+}
+
+/* Input Group (wrapper for input + icon) */
+.input-group {
+    position: relative;
+    width: 100%; /* Take full width of parent (form) */
+}
+
+.input-group input {
+    width: 100%; /* Take full width of parent (input-group) */
+    /* Padding for text, extra left padding for icon */
+    padding: 12px 15px 12px 45px;
+    border: 1px solid #e0e0e0; /* Light grey border */
+    border-radius: 8px; /* Rounded corners */
+    background-color: #f8f8f8; /* Very light grey background */
+    color: #333; /* Dark text color */
+    font-size: 1em;
+    box-sizing: border-box; /* Include padding and border in width */
+    outline: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+/* Input placeholder text */
+.input-group input::placeholder {
+    color: #999; /* Muted grey placeholder */
+    opacity: 1;
+}
+
+.input-group input:focus {
+    border-color: var(--primary-color); /* Green border on focus */
+    background-color: #fff; /* White background on focus */
+}
+
+/* Icon inside the input group */
+.input-group .input-icon {
+    position: absolute;
+    left: 15px; /* Position icon inside padding */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px; /* Icon size */
+    height: 20px; /* Icon size */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    /* Default icon color (dark grey/black) */
+    filter: none; /* Remove any previous filters */
+    opacity: 0.6; /* Slightly transparent */
+    pointer-events: none; /* Ensure icon doesn't interfere with input clicks */
+}
+
+/* Specific icons - You need these image files in assets/images/ */
+/* Update paths if your auth_styles.css is in a different location relative to assets/images */
+.input-group .input-icon.user-icon { background-image: url('assets/images/user_icon.png'); }
+.input-group .input-icon.lock-icon { background-image: url('assets/images/lock_icon.png'); }
+.input-group .input-icon.phone-icon { background-image: url('assets/images/phone_icon.png'); }
+
+
+/* Forgot Password link */
+.auth-card-container .forgot-password {
+    display: block;
+    text-align: right;
+    font-size: 0.9em;
+    margin-top: -10px; /* Pull up closer to password input */
+    margin-bottom: 10px; /* Space before button */
+}
+.auth-card-container .forgot-password a {
+     color: #777; /* Dark grey link */
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+.auth-card-container .forgot-password a:hover {
+    color: var(--primary-dark); /* Green on hover */
+}
+
+/* Submit Button */
+.auth-card-container button[type="submit"] {
+    width: 100%; /* Take full width of parent (form) */
+    padding: 12px;
+    /* Gradient matching the image style with green */
+    background: linear-gradient(to bottom, var(--primary-color), var(--primary-dark));
+    color: white;
+    font-size: 1.2em;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px; /* More rounded corners like the image */
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    margin-top: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add subtle shadow */
+}
+
+.auth-card-container button[type="submit"]:hover {
+    opacity: 0.9;
+}
+
+.auth-card-container button[type="submit"]:active {
+    opacity: 0.8;
+}
+
+/* Bottom link (Don't have an account / Already a member) */
+.auth-card-container p {
+    margin-top: 20px;
+    font-size: 1em;
+    color: #555; /* Darker grey text */
+}
+
+.auth-card-container p a {
+    color: var(--primary-color); /* Primary green link */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+.auth-card-container p a:hover {
+    color: var(--primary-dark); /* Darker green on hover */
+    text-decoration: underline;
+}
+
+/* Message Styling */
+.auth-card-container .error-message {
+    color: #ff5252; /* Red */
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.auth-card-container .success-message {
+    color: var(--win-color); /* Green (assuming --win-color is green) */
+    margin-bottom: 15px;
+    font-weight: bold;
+     font-size: 0.9em;
+}
+
+
+/* --- Mobile Responsiveness (@media max-width: 768px) --- */
+@media (max-width: 768px) {
+
+     /* Adjust header padding on smaller screens */
+     .auth-header-section {
+        padding: 30px 15px 60px 15px; /* Adjust padding */
+     }
+      /* Adjust header elements size */
+      .auth-header-section .checkmark-icon {
+        width: 50px; height: 50px; font-size: 1.8em;
+        margin-bottom: 10px;
+      }
+      .auth-header-section h1 { font-size: 1.8em; }
+      .auth-header-section h2 { font-size: 1.3em; }
+
+    /* Adjust card width and padding on smaller screens */
+    .auth-card-container {
+        width: 95%; /* Use a larger percentage width */
+        /* max-width is removed in this media query to allow expansion */
+        padding: 20px; /* Adjust padding inside the card */
+        margin: -40px auto 20px auto; /* Adjust top margin, keep auto left/right for centering */
+        border-radius: 15px; /* Slightly smaller radius */
+    }
+
+    /* Adjust spacing within the form */
+    .auth-card-container form {
+        gap: 10px; /* Smaller gap between inputs */
+        margin: 15px 0; /* Smaller space above/below form */
+    }
+
+    /* Adjust input padding and icon size/position */
+    .input-group input {
+        padding: 10px 12px 10px 40px; /* Adjust padding */
+        font-size: 0.9em; /* Smaller font size */
+    }
+     .input-group .input-icon {
+        width: 18px; height: 18px; left: 12px; /* Adjust icon size and position */
+    }
+
+    /* Adjust link and button sizes/padding */
+    .auth-card-container .forgot-password { font-size: 0.8em; margin-top: -8px; margin-bottom: 8px; }
+
+    .auth-card-container button[type="submit"] {
+        padding: 10px;
+        font-size: 1.1em;
+        border-radius: 20px; /* Adjust radius */
+        margin-top: 8px;
+    }
+
+    .auth-card-container p { font-size: 0.9em; margin-top: 15px; }
+
+    /* Adjust message box padding/font size */
+    .auth-card-container .error-message,
+    .auth-card-container .success-message {
+        padding: 8px;
+         font-size: 0.8em;
+         margin-bottom: 10px;
+    }
+}
+
+/* --- Very Small Screen Adjustment (@media max-width: 360px) --- */
+@media (max-width: 360px) {
+    .auth-card-container {
+        padding: 15px; /* Reduce padding even more on very small screens */
+        margin: -30px auto 15px auto; /* Adjust top and bottom margin */
+    }
+    .input-group input {
+        padding: 8px 10px 8px 35px; /* Reduce input padding and icon space */
+        font-size: 0.8em; /* Smaller font */
+    }
+    .input-group .input-icon {
+        width: 16px; height: 16px; left: 10px; /* Smaller icon */
+    }
+     .auth-card-container button[type="submit"] {
+        padding: 8px; /* Smaller button padding */
+        font-size: 1em;
+    }
+     .auth-card-container .forgot-password,
+     .auth-card-container p {
+        font-size: 0.8em; /* Smaller text */
+     }
+}

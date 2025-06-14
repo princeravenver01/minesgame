@@ -1,0 +1,920 @@
+:root {
+    /* --- Primary Green Theme Colors --- */
+    --primary-color: #52a538; /* Main green */
+    --primary-dark: #387628; /* Darker green for hover/accents */
+    --bet-button-color: #52a538; /* Green Bet button */
+    --bet-button-hover: #3cff00; /* Brighter green on hover */
+    --win-color: #52a538; /* Green for win/cashout */
+    /* REMOVED: secondary-button-bg, secondary-button-hover (no more modifier buttons) */
+    --mines-select-bg: #3a3a3a; /* Keep dark grey for dropdown */
+    --mines-select-border: #555; /* Keep grey for dropdown border */
+
+
+    /* --- Background/Text/Game Element Colors (mostly staying dark) --- */
+    --dark-bg: #1a1a1a;
+    --medium-bg: #2c2c2c;
+    --light-bg: #3a3a3a;
+    --darker-bg: #0d0d0d;
+    --lighter-bg: #1f3b63; /* Dark blue for grid tiles (based on previous layout images) */
+    --tile-hover: #2a4a7a; /* Slightly lighter blue tile hover */
+    --light-text: #ffffff; /* White text for general use */
+    --gold-color: #ffd700; /* Gold for numbers/coins */
+
+    /* --- Specific Tile Colors --- */
+    --tile-revealed-coin: #2e7d32; /* Dark green for revealed coins */
+    --tile-revealed-bomb: #c62828; /* Dark red for bombs/losses */
+    --loss-color: #f44346; /* Red for general loss indicators - Adjusted slightly for visibility */
+    --info-color: #2196f3; /* Blue for info modals */
+
+
+    /* --- Layout Constants --- */
+    --header-height: 70px; /* Desktop header height */
+    --mobile-header-height: 100px; /* Mobile header height */
+    --mobile-banner-height: 40px; /* Estimate banner height */
+    --mobile-controls-bottom-height: 130px; /* Adjusted estimate for mobile controls height */
+    --mobile-multiplier-carousel-height: 60px; /* Estimate carousel height */
+}
+
+body {
+    background-color: var(--dark-bg);
+    color: var(--light-text); /* Use variable for general body text color */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding-top: var(--header-height); /* Space for fixed header */
+    padding-bottom: 0;
+    min-height: 100vh;
+    box-sizing: border-box;
+    display: flex; /* Use flex to stack header, banner, and main content */
+    flex-direction: column;
+    width: 100%;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-height);
+    background-color: var(--dark-bg);
+    border-bottom: 1px solid var(--light-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    box-sizing: border-box;
+    z-index: 100;
+    flex-wrap: wrap; /* Allow header items to wrap on smaller screens if necessary */
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+.header-left, .header-center, .header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.header-left .logo { height: 55px; }
+.header-left .site-title { font-size: 1.4em; font-weight: bold; color: var(--gold-color); /* Keep gold or change? Image is just logo */ }
+
+/* Style for the main balance display in the header */
+.user-balance-display {
+    background-color: var(--medium-bg);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: var(--gold-color); /* Ensure balance *amount* text is gold */
+    display: flex; /* Use flex to align "COIN" label and amount */
+    align-items: center; /* Align them vertically */
+    gap: 5px; /* Space between label and amount */
+}
+
+/* Style the "COIN" label in user balance */
+.user-balance-display label {
+     font-size: 0.8em; /* Adjust size as needed */
+     color: #ccc; /* Adjust color as needed */
+     margin: 0; /* Remove margin */
+     text-transform: uppercase;
+}
+/* Style the balance amount span */
+.user-balance-display span {
+     color: var(--gold-color); /* Ensure the amount is gold */
+     font-weight: bold;
+     font-size: 1em; /* Adjust size relative to parent */
+}
+
+
+.header-icon-button { width: 35px; height: 35px; background-color: var(--medium-bg); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative; }
+.wallet-icon { background-image: url('assets/images/wallet_icon.png'); background-size: 60%; background-repeat: no-repeat; background-position: center; }
+.avatar-icon { background-image: url('assets/images/avatar_icon.png'); background-size: 70%; background-repeat: no-repeat; background-position: center; }
+.notification-icon { background-image: url('assets/images/notification_icon.png'); background-size: 60%; background-repeat: no-repeat; background-position: center; }
+.notification-icon.has-notification::after { content: ''; position: absolute; top: 5px; right: 5px; width: 8px; height: 8px; background-color: var(--primary-color); border-radius: 50%; border: 2px solid var(--dark-bg); }
+.logout-button { color: var(--light-text); text-decoration: none; background: var(--primary-color); padding: 8px 15px; border-radius: 5px; font-weight: bold; transition: background-color 0.2s ease; white-space: nowrap; }
+.logout-button:hover { background-color: var(--primary-dark); }
+
+/* --- Promotional Banner --- */
+.promo-banner {
+    background-color: var(--primary-color); /* Use primary green */
+    color: var(--dark-bg); /* Dark text on green */
+    text-align: center;
+    padding: 10px 20px;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0; /* Prevent banner from shrinking */
+}
+.promo-banner p { margin: 5px 0; }
+.promo-banner strong { color: black; /* Black color for strong text as seen in sample logo */ }
+.promo-banner .challenge-completed { color: #333; background-color: #ccc; padding: 5px 10px; border-radius: 5px; }
+/* Add styles for the banner parent div when challenge is completed */
+.promo-banner.challenge-completed-banner {
+    background-color: #ccc;
+    color: #333;
+}
+.promo-banner.challenge-completed-banner strong {
+     color: #555; /* Less emphasis on prize when completed */
+}
+
+
+/* --- NEW: Main Content Container (Desktop: Game + Side Panels side-by-side) --- */
+.main-content-container {
+    display: flex; /* Arrange children (game-wrapper, side-panels-container) horizontally */
+    gap: 20px; /* Gap between the game area and the side panels */
+    width: 100%;
+    max-width: 1200px; /* Max width for the overall content area */
+    margin: 0 auto; /* Center the container */
+    padding: 0 15px 15px 15px; /* Padding around the content */
+    box-sizing: border-box;
+    flex-grow: 1; /* Allow this container to take remaining vertical space */
+    min-height: 0; /* Important for flex items in column container */
+    overflow-y: auto; /* Add scrolling if content exceeds height */
+    -webkit-overflow-scrolling: touch;
+}
+
+        .withdrawal-button {
+            background-color:rgb(53, 164, 38); /* Example color */
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+            white-space: nowrap;
+            display: inline-block; /* Ensure padding/margins work */
+        }
+
+
+/* --- Game Wrapper (Contains core game UI elements + Multiplier/Controls below) --- */
+.game-wrapper {
+    display: flex;
+    flex-direction: column; /* Stack internal elements vertically */
+    gap: 15px; /* Gap between game-main-area, multiplier, controls */
+    flex-grow: 2; /* Allow game area to take more width */
+    max-width: 800px; /* Max width for the game column */
+    width: 100%; /* Ensure it takes full width up to max-width */
+    /* Remove previous margin/padding/width that might conflict with flex */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    flex-shrink: 0; /* Prevent game area from shrinking too much */
+}
+
+/* --- Container for Grid and side stats (inside game-wrapper) --- */
+.game-main-area {
+    display: flex;
+    gap: 20px;
+    /* Vertically center the stat items and grid on Desktop */
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: none; /* Allow it to take the full width of its parent (.game-wrapper) */
+    flex-shrink: 0;
+}
+
+.grid-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-shrink: 0;
+    align-items: center;
+    width: auto; /* Size based on content */
+    min-width: 80px; /* Ensure minimum width */
+    text-align: center;
+    /* Add flex-grow to make grid-stats potentially expand vertically if game-main-area has space */
+    flex-grow: 0; /* Keep flex-grow 0 by default on the column container itself */
+    /* Allow stat items to grow and fill vertical space in the grid-stats column container */
+    height: 100%; /* Ensure grid-stats takes full height available in game-main-area */
+    justify-content: space-around; /* Distribute space evenly if items can't grow */
+}
+.grid-stats .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--medium-bg);
+    padding: 15px 10px;
+    border-radius: 8px;
+    min-width: 80px;
+    text-align: center;
+    /* Allow stat items to grow and fill vertical space within grid-stats */
+    flex-grow: 1;
+    justify-content: center; /* Vertically center content inside the item */
+    /* Removed fixed height */
+}
+.grid-stats .stat-item img { width: 40px; height: 40px; margin-bottom: 5px; }
+.grid-stats .stat-item span { font-size: 1.5em; font-weight: bold; color: var(--gold-color); margin-bottom: 3px; }
+.grid-stats .stat-item label { font-size: 0.8em; color: #ccc; text-transform: uppercase; }
+
+.game-grid-container {
+    flex-grow: 1; /* Allow grid to take remaining width */
+    max-width: 500px; /* Limit grid max size */
+    min-width: 280px; /* Ensure minimum grid size */
+    margin: 0; /* Remove old margin */
+    /* Ensure grid-container takes full height available in game-main-area */
+    height: 100%;
+    display: flex; /* Use flex to center the grid itself if its max-width is less than container */
+    justify-content: center;
+    align-items: center;
+}
+#game-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px;
+    width: 100%; /* Take full width of its container (game-grid-container) */
+    max-width: 500px; /* Keep grid visually centered if container is wider */
+    margin: 0 auto;
+    /* Ensure grid height is responsive */
+    height: auto;
+}
+.tile {
+    /* Using variable for dark blue base color */
+    background-color: var(--lighter-bg);
+    width: 100%; aspect-ratio: 1 / 1; border-radius: 8px;
+    display: flex; justify-content: center; align-items: center; cursor: pointer;
+    transition: all 0.2s ease; border: none; box-sizing: border-box;
+}
+.tile.revealed-coin { background-color: var(--tile-revealed-coin); border: 2px solid var(--gold-color); }
+/* Ensure bomb image is handled by background and border is visible */
+.tile.revealed-bomb {
+    background-image: url('../images/bomb.png');
+    background-size: 60%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: var(--tile-revealed-bomb);
+    border: 2px solid var(--loss-color);
+}
+/* Keep hiding the <img> element inside a revealed-bomb tile */
+.tile.revealed-bomb img { display: none; }
+
+.tile.revealed-coin img { display: block; width: 60%; height: 60%; }
+.tile:not(.disabled):hover { background-color: var(--tile-hover); }
+.tile.disabled { cursor: not-allowed; opacity: 0.7; }
+
+
+/* --- Horizontal Multiplier Carousel (inside game-wrapper) --- */
+.multiplier-carousel {
+    display: flex;
+    align-items: center;
+    width: 100%; /* Take full width of parent (.game-wrapper) */
+    max-width: none; /* Override previous max-width */
+    margin: 0; /* Override previous margin */
+    background-color: var(--medium-bg);
+    padding: 10px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.multiplier-carousel .nav-arrow { background: none; border: none; color: #fff; font-size: 1.5em; cursor: pointer; padding: 0 5px; flex-shrink: 0; }
+.multiplier-carousel .nav-arrow:hover { color: var(--gold-color); }
+.multiplier-carousel .nav-arrow:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.multiplier-list-horizontal {
+    display: flex;
+    list-style: none; padding: 0; margin: 0;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; -ms-overflow-style: none;
+    flex-grow: 1;
+}
+.multiplier-list-horizontal::-webkit-scrollbar { display: none; }
+
+.multiplier-item {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 5px 15px; border-radius: 4px; margin-right: 10px; background: var(--light-bg);
+    flex-shrink: 0; min-width: 70px; text-align: center;
+}
+.multiplier-item:last-child { margin-right: 0; }
+/* Match highlight color to Bet button (primary green) */
+.multiplier-item.next-hit { border: 2px solid var(--primary-color); box-shadow: 0 0 8px var(--primary-color); background-color: rgba(82, 165, 56, 0.2); /* Adjusted background color based on primary green */ }
+.multiplier-item .hits { font-size: 0.8em; color: #ccc; }
+.multiplier-item .mult { font-size: 1.2em; font-weight: bold; color: var(--gold-color); }
+
+
+/* --- Bottom Controls Panel (inside game-wrapper) --- */
+.controls-panel-bottom {
+    display: grid; /* Use grid for internal layout */
+    /* Adjusted grid columns - removed the first and third columns for modifier buttons */
+    grid-template-columns: 1fr auto auto; /* Bet Area (auto width) | Start Button (auto width) | Mines/Cashout (auto width) */
+    grid-template-rows: auto auto; /* Row 1: Bet, Start, Mines | Row 2: Cashout (under Mines) */
+    gap: 10px;
+    width: 100%; /* Take full width of parent (.game-wrapper) */
+    max-width: none; /* Override previous max-width */
+    margin: 0; /* Override previous margin */
+    background-color: var(--darker-bg);
+    padding: 15px;
+    border-radius: 8px;
+    align-items: stretch; /* Stretch grid items vertically */
+    flex-shrink: 0;
+}
+
+.bet-selection-area {
+    /* Updated grid position */
+    grid-column: 1 / 2; grid-row: 1 / 3; /* Make bet area span both rows */
+    display: flex;
+    /* Keep flex properties but remove button-specific ones */
+    /* gap: 5px; */ /* No gap needed with only one child */
+    /* align-items: stretch; */ /* Not needed with only one child */
+    background-color: var(--medium-bg);
+    padding: 8px;
+    border-radius: 8px;
+    /* Ensure the single child (.bet-amount-input-area) is centered within this area */
+    justify-content: center;
+    align-items: center;
+}
+/* REMOVED: .bet-selection-area .bet-controls-buttons */
+/* REMOVED: .bet-btn-modifier */
+
+
+/* Style the bet amount input area (now the only content in bet-selection-area) */
+.bet-amount-input-area {
+    display: flex;
+    flex-direction: column; /* Stack input row and winnings display vertically */
+    align-items: center; /* Center content horizontally */
+    flex-grow: 1; /* Allow it to grow if parent is flex */
+    justify-content: center; /* Vertically center content */
+    width: 100%; /* Ensure it takes full width of its container */
+    max-width: 150px; /* Limit its max width for visual consistency */
+}
+
+/* Style the container for Peso symbol and Input */
+.bet-input-row {
+    display: flex; /* Arrange Peso and Input side-by-side */
+    align-items: baseline; /* Align symbol to the bottom of the number */
+    gap: 5px; /* Space between symbol and number */
+}
+
+
+/* Style the Peso symbol */
+.bet-input-row label { /* Select the label specifically inside bet-input-row */
+    font-size: 2.5em; /* Match input size */
+    font-weight: bold;
+    color: var(--gold-color);
+    margin: 0; /* Reset margin */
+    line-height: 1.1; /* Match input line height */
+}
+
+/* Style the Bet Amount input */
+.bet-amount-input-area input { /* Select the input specifically inside bet-amount-input-area */
+    border: none;
+    background: none;
+    color: var(--gold-color);
+    font-size: 2.5em; /* Significantly larger font size for the main bet amount */
+    font-weight: bold;
+    text-align: center;
+    padding: 0;
+    margin: 0; /* Remove default margins */
+    width: auto; /* Allow width based on content */
+    line-height: 1.1; /* Adjust line height */
+    max-width: 80px; /* Prevent it from getting too wide */
+}
+
+/* Style the Current Winnings paragraph */
+.current-winnings-display {
+     display: flex; /* Arrange label and span horizontally */
+     align-items: baseline; /* Align text nicely */
+     gap: 5px; /* Space between label and amount */
+     font-size: 1em; /* Adjust font size */
+     color: #ccc; /* Match label color */
+     margin-top: 5px; /* Add space above winnings display */
+}
+
+.current-winnings-display label {
+     text-transform: uppercase;
+     font-size: 0.9em; /* Smaller label */
+     font-weight: normal;
+     color: #ccc;
+     margin: 0; /* Reset margin */
+}
+
+.current-winnings-display span {
+     font-size: 1.2em; /* Larger amount */
+     font-weight: bold;
+     color: var(--gold-color); /* Gold color for the amount */
+}
+
+
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; }
+
+#start-game-btn {
+    /* Updated grid position */
+    grid-column: 2 / 3; grid-row: 1 / 3; /* Make start button span both rows */
+    background-color: var(--bet-button-color); color: white; font-size: 1.8em; font-weight: bold;
+    border: none; padding: 15px 20px; border-radius: 8px; cursor: pointer;
+    width: auto; margin-top: 0; transition: background-color 0.2s ease;
+    height: auto;
+    /* Grid items stretch vertically by default (align-self: stretch) */
+}
+#start-game-btn:hover:not(:disabled) { background-color: var(--bet-button-hover); }
+
+.mines-selection-area {
+    /* Updated grid position */
+    grid-column: 3 / 4; grid-row: 1 / 2; /* Top right corner */
+    display: flex; align-items: center; gap: 10px;
+    background-color: var(--medium-bg); padding: 8px; border-radius: 8px; white-space: nowrap;
+}
+.mines-selection-area label { font-size: 1em; color: #ccc; text-transform: uppercase; }
+
+/* Style the Mines dropdown */
+.mines-selection-area select {
+    width: auto;
+    padding: 5px 10px; /* Add padding */
+    margin: 0;
+    font-size: 1em;
+    /* Reset default appearance */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    /* Style it */
+    background-color: var(--mines-select-bg); /* Use defined variable */
+    color: var(--light-text); /* Ensure text is visible */
+    border: 1px solid var(--mines-select-border); /* Add a subtle border */
+    border-radius: 4 асоциацияpx; /* Match other elements */
+    cursor: pointer;
+    /* Add custom arrow (optional, more complex) or remove default arrow */
+    background-image: none; /* Remove default arrow */
+    padding-right: 10px; /* Keep padding if no custom arrow */
+}
+
+/* Style the dropdown arrow (optional - requires specific markup or advanced CSS) */
+/* A common technique is to wrap the select and add a pseudo-element for the arrow */
+/* Or just rely on browser default if appearance: none is not used */
+/* Since we used appearance: none, the arrow is removed. You might prefer this,
+   or you could add a wrapper div and style an arrow */
+
+
+/* REMOVED: .mines-selection-area button (This was for the +/- buttons which are gone) */
+/* FIX: Need to keep the Auto Select button style if you want to keep that button */
+/* Adding a new style for the auto-select button specifically if it remains */
+.mines-selection-area #auto-select-btn {
+    background-color: var(--secondary-button-bg); /* Use grey for utility buttons */
+    color: var(--light-text); border: none;
+    padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.9em;
+    width: auto; margin-top: 0;
+    transition: background-color 0.2s ease;
+}
+.mines-selection-area #auto-select-btn:hover:not(:disabled) { background-color: var(--secondary-button-hover); }
+
+
+#cashout-btn {
+    /* Updated grid position */
+    grid-column: 3 / 4; grid-row: 2 / 3; /* Bottom right corner */
+    background-color: var(--win-color); color: white; font-size: 1.1em; font-weight: bold;
+    border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;
+    width: 100%; margin-top: 0; transition: background-color 0.2s ease;
+    height: 50px;
+    /* Grid items stretch vertically by default */
+}
+#cashout-btn:hover:not(:disabled) { background-color: var(--primary-dark); } /* Use darker green on hover */
+#cashout-btn:disabled { background-color: #757575; cursor: not-allowed; }
+
+
+/* --- NEW: Side Panels Container (Desktop: Feed + Leaderboard stacked) --- */
+.side-panels-container {
+    display: flex;
+    flex-direction: column; /* Stack feed and leaderboard vertically */
+    gap: 15px; /* Gap between the two panels */
+    flex-grow: 1; /* Allow side panel area to grow */
+    max-width: 350px; /* Max width for the side column */
+    min-width: 250px; /* Minimum width for the side column */
+    width: 100%; /* Ensure it takes full width up to max-width */
+    /* Remove previous margin/padding/width */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    flex-shrink: 0; /* Prevent side panels from shrinking too much */
+}
+
+
+/* --- Recent Plays / Game Feed Panel (inside side-panels-container) --- */
+.game-feed-panel {
+    background: var(--medium-bg);
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%; /* Take full width of parent (.side-panels-container) */
+    max-width: none; /* Override previous max-width */
+    margin: 0; /* Override previous margin */
+    box-sizing: border-box;
+    flex-shrink: 0;
+    /* Allow feed panel to grow to fill vertical space if needed */
+    flex-grow: 1;
+}
+.game-feed-panel h3 { text-align: center; margin-top: 0; color: var(--light-text); /* Ensure heading is visible */ }
+#gameplay-feed-list {
+    list-style: none; padding: 0; margin: 0;
+    max-height: 200px; /* Keep max height for scroll */
+    overflow-y: auto;
+    font-size: 0.9em;
+}
+#gameplay-feed-list li {
+    padding: 8px; border-radius: 4px; margin-bottom: 5px; background: var(--light-bg);
+    word-break: break-word;
+}
+/* Use win/loss colors */
+#gameplay-feed-list li.feed-win { color: var(--win-color); }
+#gameplay-feed-list li.feed-loss { color: var(--loss-color); }
+
+
+/* --- Top Winners Leaderboard (inside side-panels-container) --- */
+.leaderboard-container {
+    background: var(--medium-bg); /* Add background to leaderboard */
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%; /* Take full width of parent (.side-panels-container) */
+    max-width: none; /* Override previous max-width */
+    margin: 0; /* Override previous margin */
+    box-sizing: border-box;
+    flex-shrink: 0;
+    /* Allow leaderboard panel to grow to fill vertical space if needed */
+    flex-grow: 1;
+}
+.leaderboard-container h3 { text-align: center; margin-top: 0; margin-bottom: 15px; color: var(--light-text); /* Ensure heading is visible */ }
+#top-winners-list {
+    display: flex; gap: 10px; justify-content: center; list-style: none; padding: 0; flex-wrap: wrap;
+}
+#top-winners-list li {
+    background: var(--light-bg); /* Add background to list items */
+    padding: 8px 12px; border-radius: 4px;
+    font-size: 0.9em; color: var(--gold-color);
+}
+#top-winners-list li strong { color: var(--light-text); }
+.leaderboard-container .win-amount { color: var(--win-color); font-weight: bold;} /* Use win color for amount */
+/* Add styles for leaderboard ranks */
+#top-winners-list li.leaderboard-gold { border: 2px solid gold; }
+#top-winners-list li.leaderboard-silver { border: 2px solid silver; }
+#top-winners-list li.leaderboard-bronze { border: 2px solid #cd7f32; /* bronze color */ }
+
+
+/* ===== MODAL STYLES (Keep as is) ===== */
+#modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center;
+    z-index: 1000; opacity: 1; transition: opacity 0.3s ease;
+}
+#modal-overlay.hidden { opacity: 0; pointer-events: none; }
+#modal-box {
+    background: var(--medium-bg); padding: 30px; border-radius: 12px; text-align: center;
+    width: 90%; max-width: 400px; border-top: 5px solid; transform: scale(1); transition: transform 0.3s ease;
+}
+#modal-overlay.hidden #modal-box { transform: scale(0.9); }
+#modal-box h2 { margin-top: 0; font-size: 2em; }
+#modal-box p { font-size: 1.1em; color: #ddd; margin: 15px 0 25px 0; }
+#modal-box button { width: auto; padding: 10px 40px; font-size: 1em; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease; }
+.modal-win #modal-box { border-color: var(--win-color); } .modal-win #modal-box h2 { color: var(--win-color); } .modal-win #modal-close-btn { background-color: var(--win-color); color: white;} .modal-win #modal-close-btn:hover { background-color: var(--primary-dark); }
+.modal-loss #modal-box { border-color: var(--loss-color); } .modal-loss #modal-box h2 { color: var(--loss-color); } .modal-loss #modal-close-btn { background-color: var(--loss-color); color: white;} .modal-loss #modal-close-btn:hover { background-color: #d32f2f; }
+.modal-info #modal-box { border-color: var(--info-color); } .modal-info #modal-box h2 { color: var(--info-color); } .modal-info #modal-close-btn { background-color: var(--info-color); color: white;} .modal-info #modal-close-btn:hover { background-color: #1976d2; }
+
+
+/* --- Mobile Responsiveness (@media max-width: 768px) - Image 1 Layout --- */
+@media (max-width: 768px) {
+    body {
+        padding-top: var(--mobile-header-height);
+        min-height: auto; /* Let height be determined by content */
+    }
+    header { height: var(--mobile-header-height); padding: 0 10px; }
+    .header-left, .header-center, .header-right { gap: 5px; }
+    .header-left .site-title { display: none; } /* Hide site title on mobile */
+    .header-left .logo { height: 45px; }
+    .user-balance-display { padding: 3px 8px; font-size: 1em; }
+    /* Mobile: Style the "COIN" label in user balance */
+    .user-balance-display label {
+        font-size: 0.7em; /* Adjust size as needed */
+        margin-right: 3px; /* Add space between label and amount */
+    }
+    /* Mobile: Style the balance amount span */
+    .user-balance-display span {
+         font-size: 1em; /* Adjust size relative to parent */
+    }
+
+
+    .header-icon-button { width: 28px; height: 28px; }
+    .notification-icon.has-notification::after { top: 3px; right: 3px; width: 6px; height: 6px;}
+    .logout-button { padding: 4px 8px; font-size: 0.8em; }
+
+    .promo-banner { margin-bottom: 10px; padding: 8px 10px; font-size: 1em; }
+    .promo-banner p { margin: 3px 0; }
+    /* Add styles for the banner parent div when challenge is completed on mobile */
+    .promo-banner.challenge-completed-banner {
+        background-color: #ccc;
+        color: #333;
+    }
+    .promo-banner.challenge-completed-banner strong {
+         color: #555; /* Less emphasis on prize when completed */
+    }
+
+
+    /* Mobile: Stack main sections vertically */
+    .main-content-container {
+        flex-direction: column; /* Stack game-wrapper and side-panels-container */
+        gap: 10px; /* Reduced gap */
+        padding: 0 10px 10px 10px; /* Mobile padding */
+        max-width: none; /* Allow full width */
+        overflow-y: auto; /* Allow scrolling */
+        min-height: 0;
+        flex-grow: 1;
+    }
+
+    /* Mobile: Game wrapper takes full width */
+    .game-wrapper {
+        flex-direction: column; /* Keep vertical stack for internal elements */
+        gap: 10px; /* Reduced gap */
+        max-width: none; /* Allow full width */
+        width: 100%;
+        flex-grow: 1; /* Allow it to grow if needed */
+        flex-shrink: 0; /* Prevent shrinking below content */
+    }
+
+    /* Mobile: Side panels wrapper takes full width and stacks its children */
+    .side-panels-container {
+        flex-direction: column; /* Stack feed and leaderboard */
+        gap: 10px; /* Reduced gap */
+        max-width: none; /* Allow full width */
+        min-width: auto; /* Reset min-width */
+        width: 100%;
+        flex-grow: 1; /* Allow it to grow if needed */
+        flex-shrink: 0; /* Prevent shrinking below content */
+    }
+
+
+    /* Mobile: Game Main Area (Grid + Side Stats) */
+    .game-main-area {
+        flex-direction: row; /* Keep stats and grid side by side as in Image 1 */
+        gap: 8px; /* Reduced gap */
+        max-width: none;
+        margin-bottom: 0;
+        /* Vertically align top on mobile as in Image 1 */
+        align-items: flex-start;
+        justify-content: center; /* Center horizontally */
+        width: 100%;
+        /* Ensure height is auto on mobile */
+        height: auto;
+    }
+
+    .grid-stats {
+        display: flex;
+        flex-direction: column; /* Stack coin/bomb stats vertically */
+        gap: 10px;
+        flex-shrink: 0;
+        align-items: center;
+        width: auto;
+        min-width: 60px;
+        order: 0;
+        margin-bottom: 0;
+        /* Reset desktop height/justify/flex-grow on mobile */
+        height: auto;
+        justify-content: flex-start;
+        flex-grow: 0;
+        /* Make the grid-stats container align to the top of game-main-area */
+        align-self: flex-start;
+        height: 300px;
+    }
+    .grid-stats .stat-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: var(--medium-bg);
+        padding: 5px;
+        border-radius: 8px; /* Keep border radius */
+        min-width: 50px;
+        text-align: center;
+        /* Allow individual stat items to grow vertically within the grid-stats column */
+        flex-grow: 1; /* Allow them to fill vertical space */
+        justify-content: center; /* Vertically center content inside the item */
+        gap: 2px; /* Small gap between icon, number, label */
+    }
+     .grid-stats .stat-item img { width: 20px; height: 20px; margin-bottom: 2px; }
+     .grid-stats .stat-item span { font-size: 1.1em; margin: 0; } /* Remove margin bottom */
+     .grid-stats .stat-item label { font-size: 0.6em; margin: 0;} /* Remove margin bottom */
+
+    .game-grid-container {
+        flex-grow: 1;
+        max-width: 300px; /* Limit the grid size itself to fit screens better */
+         margin: 0 auto; /* Center the grid within its container */
+         min-width: 200px;
+        /* Ensure height is auto on mobile */
+        height: auto;
+        /* Reset desktop flex centering on mobile */
+        display: block;
+        justify-content: initial;
+        align-items: initial;
+    }
+
+    #game-grid {
+        grid-gap: 5px;
+        max-width: 300px; /* Sync with container max-width */
+        height: auto; /* Ensure auto height */
+    }
+    .tile { aspect-ratio: 1 / 1; }
+    .tile img { width: 50%; height: 50%; }
+
+
+    /* Mobile: Horizontal Multiplier Carousel */
+    .multiplier-carousel {
+        max-width: none;
+        margin: 0 auto;
+        padding: 5px 10px;
+        gap: 5px;
+        flex-shrink: 0;
+        height: var(--mobile-multiplier-carousel-height);
+    }
+     .multiplier-carousel .nav-arrow { font-size: 1em; padding: 0 3px; }
+     .multiplier-item { padding: 5px 8px; margin-right: 5px; min-width: 50px; }
+     .multiplier-item .mult { font-size: 1em; }
+     .multiplier-item .hits { font-size: 0.6em; }
+
+
+    /* Mobile: Bottom Controls Panel - Use flex wrap for responsive layout */
+    .controls-panel-bottom {
+             display: grid
+;
+        display: flex
+;
+        flex-direction: column;
+        grid-template-columns: 1fr auto auto;
+        grid-template-rows: auto auto;
+        gap: 8px;
+        padding: 1px;
+        max-width: none;
+        width: 100%;
+        height: auto;
+        align-items: stretch;
+    }
+
+    /* Mobile Control Items - Grid layout */
+    .bet-selection-area {
+        /* Keep grid position spanning both rows */
+        grid-column: 1 / 2; grid-row: 1 / 3;
+        /* Keep flex properties for centering its content */
+        display: flex;
+        /* gap: 5px; */ /* No gap needed */
+        /* align-items: stretch; */ /* No need to stretch its single child */
+        padding: 5px;
+        min-width: 140px;
+        /* Ensure the single child (.bet-amount-input-area) is centered */
+         justify-content: center;
+         align-items: center;
+         max-width: none; /* Remove desktop max-width */
+         width: auto; /* Allow grid column to size it */
+    }
+
+     /* Mobile: Adjust bet amount input area styles */
+     .bet-amount-input-area {
+        flex-grow: 0; /* No need to grow if parent isn't flex direction row */
+        flex-shrink: 0; /* Don't shrink */
+         min-width: auto; /* Reset min-width */
+         width: auto; /* Let its content size it */
+         max-width: none; /* Remove desktop max-width */
+     }
+      .bet-input-row {
+          gap: 3px; /* Smaller gap on mobile */
+      }
+     .bet-input-row label { /* Select the label specifically inside bet-input-row */
+         font-size: 1.5em; /* Smaller Peso symbol on mobile */
+         margin: 0; /* Reset margin */
+     }
+     .bet-amount-input-area input { /* Select the input specifically inside bet-amount-input-area */
+         font-size: 2em; /* Smaller main bet amount on mobile */
+         width: 80px; /* Let content/flex determine width */
+          margin: 0;
+          max-width: none; /* Remove desktop max-width */
+     }
+     .current-winnings-display {
+          font-size: 0.9em; /* Smaller font size on mobile */
+          gap: 3px; /* Smaller gap on mobile */
+          margin-top: 3px; /* Smaller margin top */
+     }
+     .current-winnings-display label {
+          font-size: 0.8em;
+     }
+     .current-winnings-display span {
+          font-size: 1em; /* Smaller font size on mobile */
+     }
+
+
+    #start-game-btn {
+        /* Keep grid position */
+        grid-column: 2 / 3; grid-row: 1 / 3;
+        font-size: 1.3em;
+        padding: 8px 10px;
+        min-width: 100px;
+        height: auto;
+    }
+
+    .mines-selection-area {
+        /* Keep grid position */
+        grid-column: 3 / 4; grid-row: 1 / 2;
+        gap: 5px;
+        padding: 5px;
+        justify-content: center;
+        min-width: 130px;
+         align-self: stretch; /* Match height with items on the same line */
+         height: 40px;
+    }
+     .mines-selection-area label { font-size: 0.8em; }
+     /* Mobile: Style the Mines dropdown */
+     .mines-selection-area select {
+         font-size: 0.8em;
+         padding: 4px 8px; /* Adjust padding on mobile */
+         padding-right: 8px;
+         border-radius: 4px;
+         min-width: 60px; /* Ensure minimum width */
+     }
+
+     /* REMOVED: .mines-selection-area button (for +/- buttons) */
+     /* FIX: Mobile style for auto-select button */
+     .mines-selection-area #auto-select-btn { font-size: 0.7em; padding: 2px 5px; }
+
+
+    #cashout-btn {
+        /* Keep grid position */
+        grid-column: 3 / 4; grid-row: 2 / 3;
+        font-size: 1em;
+        padding: 8px 10px;
+        min-width: 90px;
+        height: auto;
+    }
+
+    /* Mobile: Recent Plays / Game Feed Panel & Leaderboard */
+     .game-feed-panel, .leaderboard-container {
+         max-width: none;
+         margin: 0;
+         padding: 10px;
+         width: 100%;
+         flex-grow: 1;
+     }
+     .game-feed-panel h3, .leaderboard-container h3 { color: var(--light-text); }
+     #gameplay-feed-list { max-height: 150px; }
+
+     /* Make leaderboard list items stack better on mobile */
+     #top-winners-list {
+          flex-direction: column;
+          align-items: center;
+          gap: 5px;
+     }
+     #top-winners-list li {
+         padding: 5px 8px;
+         font-size: 0.8em;
+         width: 100%;
+         box-sizing: border-box;
+         text-align: left;
+     }
+     #top-winners-list li strong { /* Adjust spacing if needed */ }
+     .leaderboard-container .win-amount { float: right; font-weight: bold; color: var(--win-color);}
+     /* Add mobile styles for leaderboard ranks */
+     #top-winners-list li.leaderboard-gold { border: 1px solid gold; }
+     #top-winners-list li.leaderboard-silver { border: 1px solid silver; }
+     #top-winners-list li.leaderboard-bronze { border: 1px solid #cd7f32; }
+
+
+     /* Make modal more compact on mobile */
+     #modal-box { padding: 15px; }
+     #modal-box h2 { font-size: 1.5em; }
+     #modal-box p { font-size: 1em; margin: 10px 0; }
+     #modal-box button { padding: 8px 20px; font-size: 1em; }
+
+     .header-right {
+        margin-bottom: 15px;
+            
+     }
+
+     .mines-setttings{
+display: flex
+;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0;
+
+     }
+
+}
+
+.mines-setttings{
+    display: flex
+;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0;
+}
+
